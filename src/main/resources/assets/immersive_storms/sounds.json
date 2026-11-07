@@ -1,0 +1,17 @@
+{
+    "weather.strong_wind": {
+        "sounds": [
+            "immersive_storms:weather/wind/strong1",
+            "immersive_storms:weather/wind/strong2",
+            "immersive_storms:weather/wind/strong3"
+        ],
+        "subtitle": "subtitles.immersive_storms.weather.strong_wind"
+    },
+    "weather.soft_wind": {
+        "sounds": [
+            "immersive_storms:weather/sandstorm/soft1",
+            "immersive_storms:weather/sandstorm/soft2"
+        ],
+        "subtitle": "subtitles.immersive_storms.weather.soft_wind"
+    }
+}
