@@ -21,14 +21,21 @@ public class SandstormConfig implements ConfigData {
     boolean detectParticleRain = true;
 
     @OptionName("Sandstorm particle render distance")
-    @Comment("How many blocks away to render sandstorm particles, must be positive")
+    @Comment("How many blocks away to render sandstorm particles, must be positive (capped at 64)")
     @ConfigEntry.Gui.Tooltip
     int sandstormParticleRenderDistance = 20;
 
     @OptionName("Sandstorm particle density")
-    @Comment("Multiplier for how frequently sandstorm particles should appear, must be positive. Bigger values = more common.")
+    @Comment("Multiplier for how frequently sandstorm particles should appear, must be positive (capped at 4). Bigger values = more common.")
     @ConfigEntry.Gui.Tooltip
     float sandstormParticleDensityMultiplier = 1.0f;
+
+    /**
+     * Port addition: upper caps so a config value cannot flood the particle engine.
+     * Worst case per client tick: (2 * 64)^2 columns * (1/60) * 4 ~= 1092 spawn attempts, vs ~27 with defaults.
+     */
+    public static final int MAX_RENDER_DISTANCE = 64;
+    public static final float MAX_DENSITY_MULTIPLIER = 4.0f;
 
     public boolean isEnableSandstormParticles() {
         return enableSandstormParticles;
@@ -43,11 +50,11 @@ public class SandstormConfig implements ConfigData {
     }
 
     public int getSandstormParticleRenderDistance() {
-        return sandstormParticleRenderDistance;
+        return Math.min(sandstormParticleRenderDistance, MAX_RENDER_DISTANCE);
     }
 
     public float getSandstormParticleDensityMultiplier() {
-        return sandstormParticleDensityMultiplier;
+        return Math.min(sandstormParticleDensityMultiplier, MAX_DENSITY_MULTIPLIER);
     }
 
     @Override

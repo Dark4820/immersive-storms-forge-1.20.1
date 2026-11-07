@@ -23,9 +23,9 @@
   "text.autoconfig.immersive_storms.option.sandstorm.enableSandstormParticles": "Enable sandstorm particles",
   "text.autoconfig.immersive_storms.option.sandstorm.enableSandstormSounds": "Enable sandstorm sounds",
   "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleDensityMultiplier": "Sandstorm particle density",
-  "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleDensityMultiplier.@Tooltip": "Multiplier for how frequently sandstorm particles should appear, must be positive. Bigger values = more common.",
+  "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleDensityMultiplier.@Tooltip": "Multiplier for how frequently sandstorm particles should appear, must be positive (capped at 4). Bigger values = more common.",
   "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleRenderDistance": "Sandstorm particle render distance",
-  "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleRenderDistance.@Tooltip": "How many blocks away to render sandstorm particles, must be positive",
+  "text.autoconfig.immersive_storms.option.sandstorm.sandstormParticleRenderDistance.@Tooltip": "How many blocks away to render sandstorm particles, must be positive (capped at 64)",
   "text.autoconfig.immersive_storms.option.windParticleChanceMultiplier": "Wind particle chance multiplier",
   "text.autoconfig.immersive_storms.option.windParticleChanceMultiplier.@Tooltip": "Adjusts how often ambient wind particles appear (does not affect sandstorms), must be positive",
   "text.autoconfig.immersive_storms.title": "Immersive Storms"
