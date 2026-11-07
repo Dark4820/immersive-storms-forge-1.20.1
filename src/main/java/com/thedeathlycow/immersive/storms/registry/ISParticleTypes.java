@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.thedeathlycow.immersive.storms.ImmersiveStorms;
 import com.thedeathlycow.immersive.storms.particle.DustGrainParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -20,6 +21,14 @@ public final class ISParticleTypes {
                     return DustGrainParticleOptions.CODEC;
                 }
             }
+    );
+
+    /**
+     * Black rain splash (from Immersive Storms 2.0).
+     */
+    public static final RegistryObject<SimpleParticleType> BLACK_RAIN = PARTICLE_TYPES.register(
+            "black_rain",
+            () -> new SimpleParticleType(false)
     );
 
     private ISParticleTypes() {

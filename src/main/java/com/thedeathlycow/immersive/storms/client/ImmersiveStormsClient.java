@@ -1,6 +1,7 @@
 package com.thedeathlycow.immersive.storms.client;
 
 import com.thedeathlycow.immersive.storms.ImmersiveStorms;
+import com.thedeathlycow.immersive.storms.client.particle.BlackWaterDropParticle;
 import com.thedeathlycow.immersive.storms.client.particle.DustGrainParticle;
 import com.thedeathlycow.immersive.storms.client.world.BiomeWindEffects;
 import com.thedeathlycow.immersive.storms.client.world.FogEffects;
@@ -80,6 +81,7 @@ public final class ImmersiveStormsClient {
 
     private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ISParticleTypes.DUST_GRAIN.get(), DustGrainParticle.Provider::new);
+        event.registerSpriteSet(ISParticleTypes.BLACK_RAIN.get(), BlackWaterDropParticle.Provider::new);
     }
 
     /**

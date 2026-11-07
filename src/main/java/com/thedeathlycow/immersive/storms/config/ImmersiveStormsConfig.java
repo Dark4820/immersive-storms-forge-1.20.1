@@ -39,6 +39,11 @@ public class ImmersiveStormsConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     boolean enableAmbientWindSounds = true;
 
+    @OptionName("Enable black rain")
+    @Comment("Enables the black rain effect in biomes like the Pale Garden")
+    @ConfigEntry.Gui.Tooltip
+    boolean enableBlackRain = true;
+
     @OptionName("Fog distance multiplier")
     @Comment("Adjusts how close fog closes in during weather, must be positive")
     @ConfigEntry.Gui.Tooltip
@@ -76,6 +81,10 @@ public class ImmersiveStormsConfig implements ConfigData {
 
     public boolean isEnableAmbientWindSounds() {
         return enableAmbientWindSounds;
+    }
+
+    public boolean isEnableBlackRain() {
+        return enableBlackRain;
     }
 
     public float getFogDistanceMultiplier() {
