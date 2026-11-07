@@ -1,12 +1,18 @@
 {
   "values": [
-    { "id": "#forge:is_desert", "required": false },
-    { "id": "#forge:is_badlands", "required": false },
-    { "id": "#forge:is_savanna", "required": false },
-    { "id": "#minecraft:is_badlands", "required": false },
-    { "id": "#minecraft:is_savanna", "required": false },
-    { "id": "#c:is_desert", "required": false },
-    { "id": "#c:is_badlands", "required": false },
-    { "id": "#c:is_savanna", "required": false }
+    {"id": "#forge:is_desert", "required": false},
+    {"id": "#forge:is_badlands", "required": false},
+    {"id": "#forge:is_savanna", "required": false},
+    {"id": "#minecraft:is_badlands", "required": false},
+    {"id": "#minecraft:is_savanna", "required": false},
+    {"id": "#c:is_desert", "required": false},
+    {"id": "#c:is_badlands", "required": false},
+    {"id": "#c:is_savanna", "required": false},
+    {"id": "terralith:ancient_sands", "required": false},
+    {"id": "terralith:red_oasis", "required": false},
+    {"id": "terralith:white_mesa", "required": false},
+    {"id": "terralith:warped_mesa", "required": false},
+    {"id": "terralith:arid_highlands", "required": false},
+    {"id": "terralith:ashen_savanna", "required": false}
   ]
 }

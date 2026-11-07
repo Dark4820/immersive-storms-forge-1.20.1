@@ -1,9 +1,12 @@
 {
   "values": [
-    { "id": "#forge:is_snowy", "required": false },
-    { "id": "#forge:is_icy", "required": false },
-    { "id": "#c:is_snowy", "required": false },
-    { "id": "#c:is_icy", "required": false },
-    { "id": "#c:is_aquatic_icy", "required": false }
+    {"id": "#forge:is_snowy", "required": false},
+    {"id": "#forge:is_icy", "required": false},
+    {"id": "#c:is_snowy", "required": false},
+    {"id": "#c:is_icy", "required": false},
+    {"id": "#c:is_aquatic_icy", "required": false},
+    {"id": "terralith:frozen_cliffs", "required": false},
+    {"id": "terralith:glacial_chasm", "required": false},
+    {"id": "terralith:scarlet_mountains", "required": false}
   ]
 }
