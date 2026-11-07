@@ -1,0 +1,7 @@
+{
+  "values": [
+    { "id": "minecraft:pale_garden", "required": false },
+    { "id": "#forge:is_swamp", "required": false },
+    { "id": "#c:is_swamp", "required": false }
+  ]
+}

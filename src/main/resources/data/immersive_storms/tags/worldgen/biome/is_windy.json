@@ -1,0 +1,18 @@
+{
+  "values": [
+    { "id": "#forge:is_desert", "required": false },
+    { "id": "#forge:is_badlands", "required": false },
+    { "id": "#minecraft:is_badlands", "required": false },
+    { "id": "#forge:is_mountain", "required": false },
+    { "id": "#minecraft:is_mountain", "required": false },
+    { "id": "#forge:is_windswept", "required": false },
+    { "id": "minecraft:windswept_hills", "required": false },
+    { "id": "minecraft:windswept_gravelly_hills", "required": false },
+    { "id": "minecraft:windswept_forest", "required": false },
+    { "id": "minecraft:windswept_savanna", "required": false },
+    { "id": "#c:is_desert", "required": false },
+    { "id": "#c:is_badlands", "required": false },
+    { "id": "#c:is_mountain", "required": false },
+    { "id": "#c:is_windswept", "required": false }
+  ]
+}
