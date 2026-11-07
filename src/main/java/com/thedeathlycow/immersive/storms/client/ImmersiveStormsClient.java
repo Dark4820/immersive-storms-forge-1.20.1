@@ -13,12 +13,14 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,16 @@ public final class ImmersiveStormsClient {
 
     private static final List<Consumer<ClientLevel>> LEVEL_TICK_HANDLERS = new ArrayList<>();
 
-    public static void init(IEventBus modBus) {
+    public static void init(ModLoadingContext context, IEventBus modBus) {
         registerConfig();
+
+        // Config button in the Forge mod list (replaces the Mod Menu integration)
+        context.registerExtensionPoint(
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory(
+                        (minecraft, parent) -> AutoConfig.getConfigScreen(ImmersiveStormsConfig.class, parent).get()
+                )
+        );
 
         boolean disableSandstormEffects = getConfig().getSandstorm().isDetectParticleRain()
                 && ModList.get().isLoaded("particlerain");

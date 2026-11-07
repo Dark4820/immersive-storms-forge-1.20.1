@@ -24,7 +24,7 @@ public class ImmersiveStorms {
         ISSoundEvents.SOUND_EVENTS.register(modBus);
 
         // Everything else in this mod is client-only (no server tick logic)
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ImmersiveStormsClient.init(modBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ImmersiveStormsClient.init(context, modBus));
     }
 
     public static ResourceLocation id(String path) {
