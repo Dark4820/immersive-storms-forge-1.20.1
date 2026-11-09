@@ -1,7 +1,7 @@
 # Immersive Storms — unofficial Forge 1.20.1 port
 
-Version: **1.0.0-forge.1**
-Date of modification: **2026-11-07**
+Version: **1.0.0-forge.2**
+Date of modification: **2026-11-09** (first port: 2026-11-07)
 
 This is an unofficial port, made for personal use in a private modpack, of **Immersive Storms** by **TheDeathlyCow**. It is not affiliated with or endorsed by the original author. Please report issues with this port here, not to the original author.
 
@@ -68,6 +68,16 @@ Requires JDK 17.
 gradlew clean build
 ```
 
-The jar to install is `build/libs/immersive_storms-1.0.0-forge.1.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
+The jar to install is `build/libs/immersive_storms-1.0.0-forge.2.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
 
-Files in `dev/` and `run-mods/` are for the development environment only and are not included in the jar.
+Files in `dev/`, `run-mods/` and `src/devtest/` are for the development environment only and are not included in the jar.
+
+## Tests
+
+- `gradlew test` (also part of `gradlew build`): checks that the config classes only contain writable instance fields.
+- `gradlew runClient -Pselftest=config`: opens the real config screen in a dev client, changes one option in each category (root and sandstorm), saves, checks the values in game, in `config/immersive_storms.json5` and after a reload from disk, restores the original file and closes the game. The result is written to `run/selftest/config-screen.txt`.
+
+## Changelog
+
+- **1.0.0-forge.2** (2026-11-09): fixed a crash when saving the config screen (`IllegalAccessException: Can not set static final int field SandstormConfig.MAX_RENDER_DISTANCE`). The particle caps were moved out of the config classes into `ConfigLimits`, because AutoConfig's screen treats every field of a config class as an option. Added the tests above.
+- **1.0.0-forge.1** (2026-11-07): first port.

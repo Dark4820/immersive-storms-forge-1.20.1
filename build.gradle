@@ -16,6 +16,14 @@ base {
 // Jar-in-jar (MixinExtras)
 jarJar.enable()
 
+// Dev-only in-game self tests (src/devtest). Loaded by the dev runs, never packaged in the jar.
+sourceSets {
+    devtest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -85,6 +93,7 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
+                    source sourceSets.devtest
                 }
             }
         }
@@ -92,6 +101,8 @@ minecraft {
         client {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
+            // gradlew runClient -Pselftest=config : runs the config screen self test and closes the game
+            property 'immersive_storms.selftest', (project.findProperty('selftest') ?: 'off').toString()
         }
 
         server {
@@ -147,6 +158,10 @@ dependencies {
 
     // Cloth Config (same version as the modpack)
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+
+    // Unit tests
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // Mixin + MixinExtras (bundled with jarJar; Forge picks the highest version in the pack)
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
@@ -251,4 +266,9 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    testLogging { events 'passed', 'failed', 'skipped'; exceptionFormat 'full' }
 }

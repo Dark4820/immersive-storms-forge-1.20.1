@@ -30,12 +30,8 @@ public class SandstormConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     float sandstormParticleDensityMultiplier = 1.0f;
 
-    /**
-     * Port addition: upper caps so a config value cannot flood the particle engine.
-     * Worst case per client tick: (2 * 64)^2 columns * (1/60) * 4 ~= 1092 spawn attempts, vs ~27 with defaults.
-     */
-    public static final int MAX_RENDER_DISTANCE = 64;
-    public static final float MAX_DENSITY_MULTIPLIER = 4.0f;
+    // Note: no static or final fields in this class, AutoConfig's GUI would try to write them on save.
+    // Caps live in ConfigLimits.
 
     public boolean isEnableSandstormParticles() {
         return enableSandstormParticles;
@@ -50,11 +46,11 @@ public class SandstormConfig implements ConfigData {
     }
 
     public int getSandstormParticleRenderDistance() {
-        return Math.min(sandstormParticleRenderDistance, MAX_RENDER_DISTANCE);
+        return Math.min(sandstormParticleRenderDistance, ConfigLimits.MAX_SANDSTORM_RENDER_DISTANCE);
     }
 
     public float getSandstormParticleDensityMultiplier() {
-        return Math.min(sandstormParticleDensityMultiplier, MAX_DENSITY_MULTIPLIER);
+        return Math.min(sandstormParticleDensityMultiplier, ConfigLimits.MAX_SANDSTORM_DENSITY_MULTIPLIER);
     }
 
     @Override
