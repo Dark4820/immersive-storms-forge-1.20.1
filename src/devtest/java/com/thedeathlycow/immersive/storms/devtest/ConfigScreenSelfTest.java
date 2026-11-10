@@ -121,6 +121,7 @@ public final class ConfigScreenSelfTest {
         String[] expected = {
                 "enableFogChanges", "enableSandstormFog", "enableBlizzardFog", "enableDenseFog",
                 "enableAmbientWindParticles", "enableAmbientWindSounds", "enableBlackRain",
+                "restoreVanillaOverworldWeatherAndSky",
                 "fogDistanceMultiplier", "windParticleChanceMultiplier", "sandstorm",
                 "sandstorm.enableSandstormParticles", "sandstorm.enableSandstormSounds", "sandstorm.detectParticleRain",
                 "sandstorm.sandstormParticleRenderDistance", "sandstorm.sandstormParticleDensityMultiplier"
@@ -131,6 +132,7 @@ public final class ConfigScreenSelfTest {
         // Root category: one boolean (black rain off) and one number
         ok &= toggle(report, entries.get("enableBlackRain"), "enableBlackRain");
         ok &= setText(report, entries.get("windParticleChanceMultiplier"), "1.5", "windParticleChanceMultiplier");
+        ok &= toggle(report, entries.get("restoreVanillaOverworldWeatherAndSky"), "restoreVanillaOverworldWeatherAndSky");
         // Sandstorm sub-category: one boolean and one number
         ok &= toggle(report, entries.get("sandstorm.enableSandstormSounds"), "sandstorm.enableSandstormSounds");
         ok &= setText(report, entries.get("sandstorm.sandstormParticleRenderDistance"), "32", "sandstorm.sandstormParticleRenderDistance");
@@ -154,6 +156,7 @@ public final class ConfigScreenSelfTest {
         // With black rain disabled BlackRainEffect returns before touching the level/biome
         ok &= check(report, !BlackRainEffect.isBlackRain(null, null), "in game: BlackRainEffect.isBlackRain() == false");
         ok &= check(report, Math.abs(config.getWindParticleChanceMultiplier() - 1.5f) < 1e-6, "in game: wind multiplier == 1.5");
+        ok &= check(report, !config.isRestoreVanillaOverworldWeatherAndSky(), "in game: restore vanilla Overworld weather and sky == false");
         ok &= check(report, !config.getSandstorm().isEnableSandstormSounds(), "in game: sandstorm sounds == false");
         ok &= check(report, config.getSandstorm().getSandstormParticleRenderDistance() == 32, "in game: sandstorm render distance == 32");
 
@@ -161,6 +164,7 @@ public final class ConfigScreenSelfTest {
         String json = Files.readString(configFile, StandardCharsets.UTF_8);
         ok &= check(report, json.contains("\"enableBlackRain\": false"), "file: \"enableBlackRain\": false");
         ok &= check(report, json.contains("\"windParticleChanceMultiplier\": 1.5"), "file: \"windParticleChanceMultiplier\": 1.5");
+        ok &= check(report, json.contains("\"restoreVanillaOverworldWeatherAndSky\": false"), "file: \"restoreVanillaOverworldWeatherAndSky\": false");
         ok &= check(report, json.contains("\"enableSandstormSounds\": false"), "file: \"enableSandstormSounds\": false");
         ok &= check(report, json.contains("\"sandstormParticleRenderDistance\": 32"), "file: \"sandstormParticleRenderDistance\": 32");
         ok &= check(report, !json.contains("MAX_"), "file: no constants serialized");

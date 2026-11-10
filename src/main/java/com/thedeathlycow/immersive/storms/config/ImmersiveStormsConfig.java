@@ -44,6 +44,11 @@ public class ImmersiveStormsConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     boolean enableBlackRain = true;
 
+    @OptionName("Restore vanilla Overworld weather and sky")
+    @Comment("If another mod's dimension effects skip vanilla rain, clouds or sky in the Overworld without drawing them, draw the vanilla ones anyway")
+    @ConfigEntry.Gui.Tooltip
+    boolean restoreVanillaOverworldWeatherAndSky = true;
+
     @OptionName("Fog distance multiplier")
     @Comment("Adjusts how close fog closes in during weather, must be positive")
     @ConfigEntry.Gui.Tooltip
@@ -85,6 +90,10 @@ public class ImmersiveStormsConfig implements ConfigData {
 
     public boolean isEnableBlackRain() {
         return enableBlackRain;
+    }
+
+    public boolean isRestoreVanillaOverworldWeatherAndSky() {
+        return restoreVanillaOverworldWeatherAndSky;
     }
 
     public float getFogDistanceMultiplier() {

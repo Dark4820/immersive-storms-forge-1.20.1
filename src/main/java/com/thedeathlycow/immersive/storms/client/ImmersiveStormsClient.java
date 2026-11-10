@@ -101,6 +101,7 @@ public final class ImmersiveStormsClient {
         for (Consumer<ClientLevel> handler : LEVEL_TICK_HANDLERS) {
             handler.accept(level);
         }
+        com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.onClientTick(client);
     }
 
     private static void onComputeFogColor(ViewportEvent.ComputeFogColor event) {

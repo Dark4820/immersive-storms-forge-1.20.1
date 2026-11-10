@@ -17,6 +17,8 @@
   "text.autoconfig.immersive_storms.option.enableSandstormFog.@Tooltip": "Toggles the fog density and color changes for sandstorms",
   "text.autoconfig.immersive_storms.option.fogDistanceMultiplier": "Fog distance multiplier",
   "text.autoconfig.immersive_storms.option.fogDistanceMultiplier.@Tooltip": "Adjusts how close fog closes in during weather, must be positive",
+  "text.autoconfig.immersive_storms.option.restoreVanillaOverworldWeatherAndSky": "Restore vanilla Overworld weather and sky",
+  "text.autoconfig.immersive_storms.option.restoreVanillaOverworldWeatherAndSky.@Tooltip": "If another mod's dimension effects skip vanilla rain, clouds or sky in the Overworld without drawing them, draw the vanilla ones anyway",
   "text.autoconfig.immersive_storms.option.sandstorm": "Sandstorm Config",
   "text.autoconfig.immersive_storms.option.sandstorm.detectParticleRain": "Detect Particle Rain",
   "text.autoconfig.immersive_storms.option.sandstorm.detectParticleRain.@Tooltip": "Will disable sandstorm particles and sounds automatically if the mod Particle Rain is detected",

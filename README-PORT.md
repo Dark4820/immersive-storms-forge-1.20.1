@@ -1,6 +1,6 @@
 # Immersive Storms — unofficial Forge 1.20.1 port
 
-Version: **1.0.0-forge.2**
+Version: **1.0.0-forge.3**
 Date of modification: **2026-11-09** (first port: 2026-11-07)
 
 This is an unofficial port, made for personal use in a private modpack, of **Immersive Storms** by **TheDeathlyCow**. It is not affiliated with or endorsed by the original author. Please report issues with this port here, not to the original author.
@@ -51,8 +51,18 @@ Sound effects are from Pixabay; see `CREDITS.md` (also included in the jar).
 - New particle `immersive_storms:black_rain` (based on the vanilla splash) and new config option "Enable black rain".
 - MixinExtras is bundled with Forge Jar-in-Jar.
 
+### Overworld weather and sky guard
+- New option "Restore vanilla Overworld weather and sky" (on by default). Some mods replace the Overworld
+  dimension effects and, through a bug, skip vanilla rain, rain splashes and sounds, clouds and sky there without
+  drawing anything (Mofu's Better End when The Beyond is also installed, see `docs/mofu-effects-bug.md`).
+  The port wraps the four Forge dimension-effects hooks in `LevelRenderer` (`renderSnowAndRain`, `tickRain`,
+  `renderClouds`, `renderSky`): the original hook is always called, and only when the real level is
+  `minecraft:overworld`, the effects are not vanilla and the hook returned `true`, vanilla renders anyway.
+  Other dimensions (also ones that reuse the overworld effects key) are never touched. The first time it acts on
+  each hook it logs a warning naming the mod.
+
 ### Config
-- Same options as 1.0.0, plus "Enable black rain".
+- Same options as 1.0.0, plus "Enable black rain" and "Restore vanilla Overworld weather and sky".
 - Port addition: the sandstorm particle render distance is capped at 64 and the density multiplier at 4.
 
 ### Performance
@@ -68,16 +78,24 @@ Requires JDK 17.
 gradlew clean build
 ```
 
-The jar to install is `build/libs/immersive_storms-1.0.0-forge.2.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
+The jar to install is `build/libs/immersive_storms-1.0.0-forge.3.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
 
 Files in `dev/`, `run-mods/` and `src/devtest/` are for the development environment only and are not included in the jar.
 
 ## Tests
 
 - `gradlew test` (also part of `gradlew build`): checks that the config classes only contain writable instance fields.
+- `gradlew runClient -Pselftest=rain[:label]` (dev only, `RainProbeSelfTest`): loads the `Terralith` test world, sets
+  daytime rain in plains, logs the Overworld dimension effects and the guard counters, takes screenshots, then
+  visits `mofus_better_end_:broken_constellation` and `minecraft:the_end` and checks the guard does not act there.
+  A label containing `guardoff` disables the option for that run (in memory only). Optional mods for these runs
+  go in `run-mods/` (gitignored).
 - `gradlew runClient -Pselftest=config`: opens the real config screen in a dev client, changes one option in each category (root and sandstorm), saves, checks the values in game, in `config/immersive_storms.json5` and after a reload from disk, restores the original file and closes the game. The result is written to `run/selftest/config-screen.txt`.
 
 ## Changelog
 
+- **1.0.0-forge.3** (2026-11-09): new option "Restore vanilla Overworld weather and sky" (on by default), which
+  brings back Overworld rain, splashes, rain sounds, clouds and sky when another mod's dimension effects skip them
+  without drawing (Mofu's Better End together with The Beyond). Documented the Mofu bug in `docs/mofu-effects-bug.md`.
 - **1.0.0-forge.2** (2026-11-09): fixed a crash when saving the config screen (`IllegalAccessException: Can not set static final int field SandstormConfig.MAX_RENDER_DISTANCE`). The particle caps were moved out of the config classes into `ConfigLimits`, because AutoConfig's screen treats every field of a config class as an option. Added the tests above.
 - **1.0.0-forge.1** (2026-11-07): first port.

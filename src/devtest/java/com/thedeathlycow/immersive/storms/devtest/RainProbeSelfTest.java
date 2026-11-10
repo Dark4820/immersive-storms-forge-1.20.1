@@ -42,7 +42,12 @@ import java.util.List;
 public final class RainProbeSelfTest {
     private static final String WORLD = "Terralith";
 
-    private enum Stage { WAIT_TITLE, LOADING, SETUP, SETTLE, SHOT_HORIZON, SHOT_SKY, DONE }
+    private enum Stage { WAIT_TITLE, LOADING, SETUP, SETTLE, SHOT_HORIZON, SHOT_SKY, GO_OTHER, SETTLE_OTHER, DONE }
+
+    /** Other dimensions visited after the overworld, to check the effects guard leaves them alone. */
+    private static final String[] OTHER_DIMENSIONS = {"mofus_better_end_:broken_constellation", "minecraft:the_end"};
+    private static int otherIndex = 0;
+    private static long[] guardBefore;
 
     private static Stage stage = Stage.WAIT_TITLE;
     private static int timer = 0;
@@ -74,6 +79,9 @@ public final class RainProbeSelfTest {
         switch (stage) {
             case WAIT_TITLE -> {
                 if (mc.screen instanceof TitleScreen title) {
+                    setGuardOption(!label.contains("guardoff"));
+                    // the game must keep ticking even if the window loses focus (otherwise tickRain stops while frames still render)
+                    mc.options.pauseOnLostFocus = false;
                     stage = Stage.LOADING;
                     mc.createWorldOpenFlows().loadLevel(title, WORLD);
                 }
@@ -109,7 +117,49 @@ public final class RainProbeSelfTest {
             case SHOT_SKY -> {
                 if (++timer >= 20) {
                     shot(mc, "sky");
+                    stage = Stage.GO_OTHER;
+                }
+            }
+            case GO_OTHER -> {
+                if (otherIndex >= OTHER_DIMENSIONS.length || mc.getSingleplayerServer() == null) {
                     finish(mc);
+                    return;
+                }
+                String dim = OTHER_DIMENSIONS[otherIndex];
+                guardBefore = guardCounts();
+                var server = mc.getSingleplayerServer();
+                var source = server.createCommandSourceStack().withSuppressedOutput();
+                run(server, source, "execute in " + dim + " run tp " + mc.player.getGameProfile().getName() + " 0.5 140 0.5 -90 5");
+                stage = Stage.SETTLE_OTHER;
+                timer = 0;
+            }
+            case SETTLE_OTHER -> {
+                String target = OTHER_DIMENSIONS[otherIndex];
+                if (mc.level == null || !mc.level.dimension().location().toString().equals(target)) {
+                    // still in the previous dimension (frames after /tp): keep moving the baseline
+                    guardBefore = guardCounts();
+                    timer = 0;
+                    return;
+                }
+                if (++timer == 20) {
+                    // baseline only once the client has been in the target dimension for a while
+                    guardBefore = guardCounts();
+                }
+                if (timer >= 180) {
+                    String dim = OTHER_DIMENSIONS[otherIndex];
+                    ClientLevel level = mc.level;
+                    long[] after = guardCounts();
+                    long delta = 0;
+                    for (int i = 0; i < after.length; i++) {
+                        delta += after[i] - guardBefore[i];
+                    }
+                    report.add("INFO other dimension " + dim + ": now in " + level.dimension().location()
+                            + ", effects=" + level.effects().getClass().getName() + " (from mod: " + ownerMod(level.effects().getClass()) + ")"
+                            + ", guard activations while here=" + delta);
+                    report.add((delta == 0 ? "PASS" : "FAIL") + " guard did not act in " + dim);
+                    shot(mc, dim.replace(':', '_'));
+                    otherIndex++;
+                    stage = Stage.GO_OTHER;
                 }
             }
             default -> {
@@ -159,6 +209,36 @@ public final class RainProbeSelfTest {
         report.add("INFO effects.renderSnowAndRain() returned " + rainHandled + (rainHandled ? " -> vanilla rain is SKIPPED" : " -> vanilla rain is drawn"));
         report.add("INFO effects.tickRain() returned " + tickHandled + (tickHandled ? " -> vanilla splashes/rain sound SKIPPED" : " -> vanilla splashes/rain sound run"));
         dumpCustomSets(effects);
+        long[] g = guardCounts();
+        report.add("INFO restore option=" + com.thedeathlycow.immersive.storms.client.ImmersiveStormsClient.getConfig().isRestoreVanillaOverworldWeatherAndSky()
+                + " guard activations: rain=" + g[0] + " rainTick=" + g[1] + " clouds=" + g[2] + " sky=" + g[3]);
+        for (var hook : com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.Hook.values()) {
+            report.add("INFO   hook " + hook + ": calls=" + com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.getCalls(hook)
+                    + " handledInOverworld=" + com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.getHandledInOverworld(hook)
+                    + " activations=" + com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.getActivations(hook));
+        }
+    }
+
+    private static long[] guardCounts() {
+        var hooks = com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.Hook.values();
+        long[] out = new long[hooks.length];
+        for (int i = 0; i < hooks.length; i++) {
+            out[i] = com.thedeathlycow.immersive.storms.client.world.OverworldEffectsGuard.getActivations(hooks[i]);
+        }
+        return out;
+    }
+
+    /** Sets the restore option in memory only (the config file is not written). */
+    private static void setGuardOption(boolean value) {
+        try {
+            Object config = com.thedeathlycow.immersive.storms.client.ImmersiveStormsClient.getConfig();
+            java.lang.reflect.Field f = config.getClass().getDeclaredField("restoreVanillaOverworldWeatherAndSky");
+            f.setAccessible(true);
+            f.setBoolean(config, value);
+            report.add("INFO restore option set to " + value + " for this run (in memory only)");
+        } catch (ReflectiveOperationException e) {
+            report.add("WARN could not set the restore option: " + e);
+        }
     }
 
     /**
