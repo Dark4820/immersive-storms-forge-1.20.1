@@ -36,7 +36,7 @@ them a custom sky is to replace the **Overworld** dimension effects:
   | `CUSTOM_SKY` (`Set<Predicate<Object[]>>`) | sky and stars | `renderSky(...)` |
   | `CUSTOM_LIGHTS` (`Set<Consumer<Object[]>>`) | lightmap | `adjustLightmapColors(...)` |
 
-- Each effects method follows the same pattern (bytecode, simplified):
+- Each effects method follows the same pattern (my pseudocode reconstruction from the bytecode, not Mofu's source):
 
   ```java
   public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lt, double x, double y, double z) {
@@ -69,7 +69,7 @@ PREDICATE` in an `FMLClientSetupEvent` handler:
 | `SkyRenderProcedure` | `skySetup(FMLClientSetupEvent)` | `CUSTOM_SKY` | `SkyRenderProcedure.PREDICATE` |
 | `StarProcedure` | `skySetup(FMLClientSetupEvent)` | `CUSTOM_SKY` | `StarProcedure.PREDICATE` |
 
-All five use the same code (decompiled from `BcRainProcedure.weatherSetup`):
+All five do the same (my pseudocode reconstruction of `BcRainProcedure.weatherSetup` from its bytecode, not Mofu's source):
 
 ```java
 try {

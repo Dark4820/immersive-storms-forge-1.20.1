@@ -212,7 +212,17 @@ tasks.named('processResources', ProcessResources).configure {
     }
 
     // LGPL-3.0: ship the license, credits and port notes inside the jar
+    doFirst {
+        ['LICENSE', 'COPYING', 'COPYING.LESSER', 'CREDITS.md', 'CHANGES.md', 'README-PORT.md'].each { name ->
+            if (!rootProject.file(name).isFile()) {
+                throw new GradleException("Missing ${name}: the LGPL-3.0 requires shipping the license texts and notices with the mod")
+            }
+        }
+    }
     from(rootProject.file('LICENSE'))
+    from(rootProject.file('COPYING'))
+    from(rootProject.file('COPYING.LESSER'))
+    from(rootProject.file('CHANGES.md'))
     from(rootProject.file('CREDITS.md'))
     from(rootProject.file('README-PORT.md'))
 }

@@ -12,3 +12,6 @@ pluginManagement {
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
 }
+
+// Fixed name so the jar manifest does not depend on the checkout folder name
+rootProject.name = 'immersive_storms'

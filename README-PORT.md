@@ -1,7 +1,7 @@
 # Immersive Storms — unofficial Forge 1.20.1 port
 
-Version: **1.0.0-forge.3**
-Date of modification: **2026-11-09** (first port: 2026-11-07)
+Version: **1.0.0-forge.4**
+Date of modification: **2026-11-12** (first port: 2026-11-07)
 
 This is an unofficial port, made for personal use in a private modpack, of **Immersive Storms** by **TheDeathlyCow**. It is not affiliated with or endorsed by the original author. Please report issues with this port here, not to the original author.
 
@@ -78,7 +78,7 @@ Requires JDK 17.
 gradlew clean build
 ```
 
-The jar to install is `build/libs/immersive_storms-1.0.0-forge.3.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
+The jar to install is `build/libs/immersive_storms-<version>.jar`. Do not install the `-slim` jar: it does not include MixinExtras.
 
 Files in `dev/`, `run-mods/` and `src/devtest/` are for the development environment only and are not included in the jar.
 
@@ -94,8 +94,11 @@ Files in `dev/`, `run-mods/` and `src/devtest/` are for the development environm
 
 ## Changelog
 
-- **1.0.0-forge.3** (2026-11-09): new option "Restore vanilla Overworld weather and sky" (on by default), which
-  brings back Overworld rain, splashes, rain sounds, clouds and sky when another mod's dimension effects skip them
-  without drawing (Mofu's Better End together with The Beyond). Documented the Mofu bug in `docs/mofu-effects-bug.md`.
-- **1.0.0-forge.2** (2026-11-09): fixed a crash when saving the config screen (`IllegalAccessException: Can not set static final int field SandstormConfig.MAX_RENDER_DISTANCE`). The particle caps were moved out of the config classes into `ConfigLimits`, because AutoConfig's screen treats every field of a config class as an option. Added the tests above.
-- **1.0.0-forge.1** (2026-11-07): first port.
+Full changelog: `CHANGES.md` (also in the jar). Public releases on CurseForge: **1.0.0-forge.1** and
+**1.0.0-forge.4**. 1.0.0-forge.2 and 1.0.0-forge.3 were internal builds and were never published.
+
+- **1.0.0-forge.4** (2026-11-12, public): everything since 1.0.0-forge.1 (config screen crash fix, "Restore vanilla
+  Overworld weather and sky") plus the full license texts in the jar.
+- **1.0.0-forge.3** (2026-11-09, internal, not published): "Restore vanilla Overworld weather and sky".
+- **1.0.0-forge.2** (2026-11-09, internal, not published): config screen crash fix.
+- **1.0.0-forge.1** (2026-11-07, public): first port.
